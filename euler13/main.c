@@ -25,8 +25,10 @@ int main() {
     for (int i = 0; i < NUM_INTS; i++) {
         fgets(data[i], INT_LEN + 2, fp);
         data[i][INT_LEN] = '\0'; // overwrite \n
-        printf("%2d %s\n", i, data[i]);
+        //printf("%2d %s\n", i, data[i]);
     }
+
+    fclose(fp); fp = NULL;
 
     unsigned int carryover = 0;
     char full_sum[2+INT_LEN+1] = {};
@@ -42,6 +44,7 @@ int main() {
             strncpy(numstr, data[i] + offset, 5);
             sum += atoi(numstr);
         }
+
         char sumstr[2+5+1] = {};
         snprintf(sumstr, 2+7+1, "%07u", sum);
         strncpy(full_sum + 2 + offset, sumstr + 2, 5);
