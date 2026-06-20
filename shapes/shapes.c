@@ -4,6 +4,7 @@ In these examples we print various shapes of letters or digits.
 */
 
 #include <stdio.h>
+#include <string.h>
 
 /*
 a
@@ -38,6 +39,8 @@ void numbers() {
     // In this code, we treats the digits as char, not int
     char data[] = "12345678987654321";
 
+    // Solution 1: each digit is printed separately,
+    // first digit is printed with extra left spaces
     for (int i = 0; i < 9; i++) { // 0-indexed row num
         for (int j = -i; j < i+1; j++) { // loop for number of chars in row
             // Example: 898: i==1 and j is [-1, 0, 1]
@@ -51,6 +54,25 @@ void numbers() {
         }
         printf("\n");
     }
+
+    // Solution 2: all digits in a row are printed together
+    // along with extra left spaces
+    for (int i = 0; i < 9; i++) {
+        /*
+        i   #spaces  #digits   #chars   format
+            8-i      2*i+1     i+9
+        0 : 8        1         8        %9s\n
+        1 : 7        3         7        %10s\n
+        2 : 6        5         6        %11s\n
+        */
+        char num[sizeof(data)] = {};
+        strncpy(num, data + 8 - i, 2*i + 1);
+
+        char format[6] = {};
+        sprintf(format , "%%%ds\n", i + 9);
+        printf(format, num);
+    }
+
 }
 
 /*
@@ -70,7 +92,7 @@ void diamond() {
     int depth = center - 'A';
     for (int i = -depth; i <= depth; i++) {
         /*
-         i  spaces  letter  spaces   letter
+         i  #spaces letter  #spaces  letter
         -3  3       A               
         -2  2       B       1        B
         -1  1       C       3        C
