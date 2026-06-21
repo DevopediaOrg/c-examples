@@ -5,6 +5,8 @@ In these examples we print various shapes of letters or digits.
 
 #include <stdio.h>
 #include <string.h>
+#include <math.h>
+
 
 /*
 a
@@ -85,7 +87,7 @@ D     D
    G
 */
 void diamond() {
-    // This implementation uses the symmetry around 'D'
+    // Solution 1: We use the symmetry around 'D'.
     // The beauty of this code is 'center' variable can be
     // and the rest of the code will work.
     char center = 'D';
@@ -93,7 +95,7 @@ void diamond() {
     for (int i = -depth; i <= depth; i++) {
         /*
          i  #spaces letter  #spaces  letter
-        -3  3       A               
+        -3  3       A
         -2  2       B       1        B
         -1  1       C       3        C
          0  0       D       5        D
@@ -103,7 +105,7 @@ void diamond() {
         */
         int abs_val = i < 0 ? -i : i; // get absolute value, or call abs() of math.h
         char format[5];
-        
+
         sprintf(format, "%%%dc\0", abs_val+1);
         printf(format, center + i);
 
@@ -112,6 +114,81 @@ void diamond() {
             printf(format, center + i);
         }
         printf("\n");
+    }
+
+    // Solution 2: Use formulae for left and center spaces
+    // len/2 points to widest part of the diamond
+    // abs(len/2-i) measures the distance from the widest part
+    // We can add more chars to data[] and this code will still work
+    char data[]="ABCDEFG";
+    int len = strlen(data);
+
+    for (int i = 0; i < len; i++) {
+        // Left spaces
+        for (int s = 0; s < abs(len/2-i); s++) {
+            printf(" ");
+        }
+
+        if (i != 0 && i != len-1) {
+            printf("%c", data[i]);
+        }
+
+        // Center spaces
+        for (int s = 0; s < len-2-2*abs(len/2-i); s++) {
+            printf(" ");
+        }
+
+        printf("%c\n", data[i]);
+    }
+
+    // Solution 3: Works but code is long and hard to maintain.
+    {
+        char data[]="ABBCCDDEEFFG";
+        for (int i = 0; i < strlen(data); i++) {
+            // Leading spaces
+            for (int s = 3; s > i; s--) {
+                printf(" ");
+            }
+
+            if (i==0) { // diamond start point
+                printf("%c\n", data[0]);
+            }
+            else if(i%2 != 0 && i < 6) { // diamond opening
+                printf("%c", data[i]);
+                for (int s = 0; s < i; s++) {
+                    printf(" ");
+                }
+                printf("%c\n", data[i]);
+            }
+            else if(i%2 != 0 && i > 6 && i < 11) { // diamond closing
+                if (i==7) {
+                    for (int k = 6; k < i; k++) {
+                        printf(" ");
+                    }
+                    printf("%c", data[i]);
+                    for (int l = 10; l > i; l--) {
+                        printf(" ");
+                    }
+                    printf("%c\n", data[i+1]);
+                }
+                else if(i==9) {
+                    for (int k = 7; k < i; k++) {
+                        printf(" ");
+                    }
+                    printf("%c", data[i]);
+                    for (int l = 10; l>i; l--) {
+                        printf(" ");
+                    }
+                    printf("%c\n", data[i+1]);
+                }
+            }
+            else if(i==11) { // diamond end point
+                for (int m = 0; m < 3; m++){
+                    printf(" ");
+                }
+                printf("%c\n", data[i]);
+            }
+        }
     }
 }
 
