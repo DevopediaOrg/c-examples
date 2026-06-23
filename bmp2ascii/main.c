@@ -1,6 +1,11 @@
 /*
 Read 24-bit BMP image and output the same as ASCII art.
-For BMP format, see https://upload.wikimedia.org/wikipedia/commons/7/75/BMPfileFormat.svg
+To learn about ASCII art, read:
+- https://en.wikipedia.org/wiki/ASCII_art
+- https://www.asciiart.eu/
+For BMP format, see:
+- https://en.wikipedia.org/wiki/BMP_file_format
+- https://upload.wikimedia.org/wikipedia/commons/7/75/BMPfileFormat.svg
 */
 
 #include <stdio.h>
@@ -28,7 +33,8 @@ typedef struct {
     int            y_pixels_per_meter;
     unsigned int   colors_used;
     unsigned int   colors_important;
-    // TODO: handle other header fields that follow
+    // TODO: handle other header fields if necessary
+    // We ignore these for now since we jump straight to the pixels
 } BMPInfoHeader;
 #pragma pack(pop)
 
@@ -75,8 +81,6 @@ int main(int argc, char *argv[]) {
         fclose(file);
         return ERR_BAD_HEADER;
     }
-
-    // Jump straight to where the pixel array begins
 
     int width = infoHeader.width;
     int height = infoHeader.height;
