@@ -19,10 +19,15 @@ int nodup(int *arr, int len) {
                 num_dups++;
 
                 // Shift values from the right 
-                for(int k = i; k < 8; k++) {
+                for(int k = i; k < len; k++) {
                     arr[k] = arr[k+1];
-                    i--; // arr[i] contains a new value from the right: process this position again
                 }
+
+                // arr[i] now contains a new value from the right,
+                // need to process this position again
+                i--;
+
+                break; // since duplicate already found
             }     
         }
     }
@@ -30,7 +35,7 @@ int nodup(int *arr, int len) {
 }
 
 int main() {
-    int arr[] = {1, 5, 3, 4, 5, 6, 6, 6, 9, 1};
+    int arr[] = {1, 5, 3, 4, 5, 6, 6, 6, 7, 6, 6, 6, 9, 1};
     int len = sizeof(arr)/sizeof(int);
     int num_uniq = nodup(arr, len);
     printf("Length of array without duplicates is %d\n", num_uniq);
