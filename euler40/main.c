@@ -20,10 +20,10 @@ int main() {
         // Slow: strlen() gets slower as string grows longer
         //len = strlen(fractional);
         //sprintf(fractional + len, "%d", i + 1);
-        
+
         // Fast: make use of the return from sprintf()
         len += sprintf(fractional + len, "%d", i + 1);
-        
+
         if (len >= 10000000) break;
     }
 
