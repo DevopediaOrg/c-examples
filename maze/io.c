@@ -21,8 +21,8 @@ int get_num_cols(FILE *fp) {
 int get_num_rows(FILE *fp) {
     int num_lines = 0;
 
-    char line[100]; // an arbitrary limit
-    while (fgets(line, 100, fp) != NULL) {
+    char line[200]; // an arbitrary limit
+    while (fgets(line, 200, fp) != NULL) {
         num_lines++;
     }
 
@@ -42,14 +42,12 @@ void read_maze_from_file(Maze *maze, char *filename) {
     maze->num_cols = get_num_cols(fp);
     maze->num_rows = get_num_rows(fp);
 
-    int total_lines = 2 * (maze->num_rows) + 1;
-    int max_line_len = 4 * (maze->num_cols) + 3; // 4 chars per cell + 1 for boundary + '\n' + '\0'
+    create_maze(maze);
 
-    maze->lines = malloc(total_lines * sizeof(char *));
-    for (int i = 0; i < total_lines; i++) {
-        maze->lines[i] = malloc((max_line_len) * sizeof(char));
-        if (fgets(maze->lines[i], max_line_len, fp) == NULL) {
-            maze->lines[i][0] = '\0';
+    char (*lines)[maze->line_len] = (char (*)[maze->line_len])maze->lines;
+    for (int i = 0; i < maze->num_lines; i++) {
+        if (fgets(lines[i], maze->line_len, fp) == NULL) {
+            lines[i][0] = '\0';
         }
     }
 
@@ -57,23 +55,23 @@ void read_maze_from_file(Maze *maze, char *filename) {
 }
 
 void encode_maze(Maze *maze) {
-    maze->m = calloc(maze->num_rows * maze->num_cols, sizeof(char));
+    char (*lines)[maze->line_len] = (char (*)[maze->line_len])maze->lines;
     char (*m)[maze->num_cols] = (char (*)[maze->num_cols])maze->m;
 
     for (int r = 0; r < maze->num_rows; r++) {
         for (int c = 0; c < maze->num_cols; c++) {
             char cell_val = 0;
 
-            if (maze->lines[2 * r][4 * c + 1] == '-') {
+            if (lines[2 * r][4 * c + 1] == '-') {
                 cell_val |= North;
             }
-            if (maze->lines[2 * r + 1][4 * c + 4] == '|') {
+            if (lines[2 * r + 1][4 * c + 4] == '|') {
                 cell_val |= East;
             }
-            if (maze->lines[2 * r + 2][4 * c + 1] == '-') {
+            if (lines[2 * r + 2][4 * c + 1] == '-') {
                 cell_val |= South;
             }
-            if (maze->lines[2 * r + 1][4 * c] == '|') {
+            if (lines[2 * r + 1][4 * c] == '|') {
                 cell_val |= West;
             }
 

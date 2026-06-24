@@ -18,7 +18,9 @@ typedef struct cell {
 typedef struct maze {
     int num_rows;
     int num_cols;
-    char **lines; // as stored in file
+    int num_lines;
+    int line_len;
+    char *lines; // as stored in file
     char *m; // as encoded in memory
 } Maze;
 
