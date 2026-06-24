@@ -13,6 +13,7 @@ These C concepts can be studied in the following programs:
 * `sprintf`: `euler40`
 * `for` loops and `printf`: `shapes`
 * Treating large numbers as strings: `euler13`
+* Randomness: `mcpi`
 
 `bmp2ascii` is an example of how to deal with images, saving them in memory as an array of pixel data. This program is also an introduction to BMP file format and ASCII art.
 
