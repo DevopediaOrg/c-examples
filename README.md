@@ -2,6 +2,22 @@
 
 This repo includes a set of examples for beginners to learn C. Each folder can be considered as separate project, that is, it has its own `main()` function. Hence, C files within a folder (and those in its sub-folders) have to be compiled and linked together.
 
+These C concepts can be studied in the following programs:
+* Pass by reference: `average`, `noduplicates`, `reverse`, `swap`
+* `enum`: `bmp2ascii`, `euler19`, `maze`
+* `struct`: `bmp2ascii`, `distance`, `maze`, `rgb`
+* File IO: `bmp2ascii`, `euler13`, `maze`
+* Arguments to `main()`: `bmp2ascii`, `maze`, `temperature`, `timediff`
+* Function return: `average`, `distance`, `maxstr`
+* `sscanf`: `rgb`, `timediff`
+* `sprintf`: `euler40`
+* `for` loops and `printf`: `shapes`
+* Treating large numbers as strings: `euler13`
+
+`bmp2ascii` is an example of how to deal with images, saving them in memory as an array of pixel data. This program is also an introduction to BMP file format and ASCII art.
+
+`maze` shows how to organize a program into multiple C header and source files. It also shows the use of documentation comments, which can help is correctly using and maintaining user-written functions.
+
 
 ## Project Euler
 In this repo, we solve some problems from Project Euler. For reference, answers are available at https://github.com/lucky-bai/projecteuler-solutions/blob/master/Solutions.md

@@ -37,8 +37,8 @@ typedef struct path {
  * @brief Dynamically allocates memory associated with the Maze structure.
  *
  * This function allocates 1-D array of chars for `lines` and `m`. However,
- * there's a dependency before calling this function. Maze members `num_rows`,
- * `num_cols`, `num_lines` and `line_len` have to be properly set.
+ * there's a dependency before calling this function. Maze members `num_rows`
+ * and `num_cols` have to be properly set.
  *
  * @param[in,out] maze Pointer to the Maze struct to be deallocated.
  */
