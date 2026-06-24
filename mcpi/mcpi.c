@@ -6,9 +6,8 @@ See https://en.wikipedia.org/wiki/Monte_Carlo_method
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-#include <math.h>
 
-#define N 10000000
+#define N 1000000
 
 int main() {
     int inside = 0;
@@ -18,8 +17,7 @@ int main() {
     for (int i = 0; i < N; i++) {
         double x = (double)rand() / RAND_MAX;
         double y = (double)rand() / RAND_MAX;
-        double r = sqrt(pow(x, 2) + pow(y, 2));
-        if (r < 1) inside++;
+        if (x*x + y*y <= 1) inside++; // if r <= 1, so is sqrt(r)
     }
 
     // Area of quarter circle / Area of square = 
