@@ -30,6 +30,7 @@ The following are the objectives:
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdbool.h>
 
 #define DEBUG 0
 
@@ -62,60 +63,147 @@ Cell path[100] = {};
 /*--------------------------------------
 Functions
 ----------------------------------------*/
-int read_row(FILE *fp, char *row, int num_cols) {
-    int actual_num_cols = 0;
-    for (int i = 0; i < num_cols; i++) {
-        int cell;
-        if (fscanf(fp, "0x%02x", &cell) == 1) {
-            row[i] = (char)cell;
-            int separator = fgetc(fp);
-            if (separator == '\n') {
-                // Last cell of each row is followed by \n and not space
-                actual_num_cols = i + 1; // assume square maze
-                break;
-            }
-            else if (separator != ' ') {
-                printf("Warning: separator is not a space as expected.\n");
-            }
-        }
-        else {
-            printf("Warning: unable to read cell in expected fscanf format.\n");
-        }
+int get_num_cols(FILE *fp) {
+    int num_corners = 0;
+
+    int ch; // fgetc() returns int and EOF is int
+    while ((ch = fgetc(fp)) != '\n' && ch != EOF) {
+        if (ch == '+') num_corners++;
     }
-    return actual_num_cols;
+
+    // Reset fp to start
+    fseek(fp, 0, SEEK_SET);
+
+    return num_corners - 1;
 }
 
-char (*read_maze(int *num_rows, int *num_cols))[] {
-    FILE *fp = fopen("m1.txt", "r");
+char (*read_maze(char *filename, int *num_rows, int *num_cols))[] {
+    FILE *fp = fopen(filename, "r");
     if (fp == NULL) {
         printf("Error: unable to open maze file.\n");
         return NULL;
     }
 
-    char row[100]; // assume a temporary limit on maze size
-    *num_cols = read_row(fp, row, sizeof(row)/sizeof(char));
+    *num_cols = get_num_cols(fp);
     *num_rows = *num_cols; // assume square maze
 
     // Allocate maze memory and copy first row
     char (*maze)[*num_cols] = calloc(*num_rows, sizeof(*maze));
-    memcpy(maze, row, sizeof(*maze));
 
-    // Read the remaining rows
-    for (int i = 1; i < *num_rows; i++) {
-        read_row(fp, maze[i], *num_cols);
+    // Read the entire maze
+    int total_lines = 2 * (*num_rows) + 1;
+    int max_line_len = 4 * (*num_cols) + 3; // 4 chars per cell + 1 for boundary + '\n' + '\0'
+
+    char **lines = malloc(total_lines * sizeof(char *));
+    for (int i = 0; i < total_lines; i++) {
+        lines[i] = malloc((max_line_len) * sizeof(char));
+        if (fgets(lines[i], max_line_len, fp) == NULL) {
+            lines[i][0] = '\0';
+        }
     }
+    fclose(fp);
+
+    for (int r = 0; r < *num_rows; r++) {
+        for (int c = 0; c < *num_cols; c++) {
+            char cell_val = 0;
+
+            if (lines[2 * r][4 * c + 1] == '-') {
+                cell_val |= North;
+            }
+            if (lines[2 * r + 1][4 * c + 4] == '|') {
+                cell_val |= East;
+            }
+            if (lines[2 * r + 2][4 * c + 1] == '-') {
+                cell_val |= South;
+            }
+            if (lines[2 * r + 1][4 * c] == '|') {
+                cell_val |= West;
+            }
+
+            maze[r][c] = cell_val;
+        }
+    }
+
+    for (int i = 0; i < total_lines; i++) {
+        free(lines[i]);
+    }
+    free(lines);
 
     return maze;
 }
 
-void print_maze(int num_rows, int num_cols, char (*maze)[num_cols]) {
+void print_encoded_maze(int num_rows, int num_cols, char (*maze)[num_cols]) {
     for (int i = 0; i < num_rows; i++) {
         for (int j = 0; j < num_cols; j++) {
-            printf("0x%02x", (unsigned char)maze[i][j]);
+            printf("0x%02X", (unsigned char)maze[i][j]);
             if (j == num_cols-1) printf("\n");
             else printf(" ");
         }
     }
+}
+
+bool is_on_path(int r, int c, Cell *path, int num_steps) {
+    if (path == NULL) return false;
+    for (int i = 0; i < num_steps; i++) {
+        // Assuming x is column index and y is row index (or vice versa depending on your implementation)
+        // Adjust if your struct defines x as row and y as column
+        if (path[i].x == r && path[i].y == c) {
+            return true;
+        }
+    }
+    return false;
+}
+
+void print_maze(char (*maze)[num_cols], Cell *path, int num_steps) {
+    for (int r = 0; r < num_rows; r++) {
+        
+        // --- 1. Print the North Walls Row ---
+        for (int c = 0; c < num_cols; c++) {
+            printf("+");
+            if (maze[r][c] & North) {
+                printf("---");
+            } else {
+                printf("   ");
+            }
+        }
+        // Caps off the right side of the North boundary row
+        printf("+\n");
+
+        // --- 2. Print the Cell Middle Row (West wall, Space/*, East wall) ---
+        for (int c = 0; c < num_cols; c++) {
+            // Print the West wall of the cell
+            if (maze[r][c] & West) {
+                printf("|");
+            } else {
+                printf(" ");
+            }
+
+            // Print the cell interior center (Path marker '*' or empty space)
+            if (is_on_path(r, c, path, num_steps)) {
+                printf(" * ");
+            } else {
+                printf("   ");
+            }
+        }
+        // Caps off the very last East wall of the current row
+        if (maze[r][num_cols - 1] & East) {
+            printf("|\n");
+        } else {
+            printf(" \n");
+        }
+    }
+
+    // --- 3. Print the Final South Wall Row ---
+    // The bottom-most outer border needs to be closed out cleanly
+    for (int c = 0; c < num_cols; c++) {
+        printf("+");
+        if (maze[num_rows - 1][c] & South) {
+            printf("---");
+        } else {
+            printf("   ");
+        }
+    }
+    printf("+\n");
 }
 
 Cell* explore(int x, int y, Direction in, char (*maze)[num_cols], int path_idx) {
@@ -181,16 +269,23 @@ void solve_maze(int num_rows, int num_cols, char (*maze)[num_cols]) {
     for (int i = 0; i < num_steps; i++) {
         printf("(%d, %d) ", path[i].x, path[i].y);
     }
+    printf("\n\n");
+    print_maze(maze, path, num_steps);
 }
 
 
 /*--------------------------------------
 Main processing
 ----------------------------------------*/
-int main() {
-    char (*maze)[];
+int main(int argc, char *argv[]) {
+    if (argc != 2) {
+        printf("Error: expecting exactly 1 program argument, the maze filename to process. Quitting...\n");
+        return 1;
+    }
 
-    maze = read_maze(&num_rows, &num_cols);
+    char (*maze)[];
+    
+    maze = read_maze(argv[1], &num_rows, &num_cols);
     
     solve_maze(num_rows, num_cols, maze);
 
