@@ -4,6 +4,9 @@
 #include "io.h"
 #include "solver.h"
 
+#define DEBUG_SOLVER 0
+
+/* Implementation as declared in solver.h */
 bool is_on_path(int r, int c, Path *path) {
     if (path == NULL) return false;
     for (int i = 0; i < path->num_steps; i++) {
@@ -14,11 +17,25 @@ bool is_on_path(int r, int c, Path *path) {
     return false;
 }
 
+/**
+ * @brief Core recursive function that explores the maze layout using Depth-First Search (DFS).
+ *
+ * Navigates from cell to cell by assessing valid moves (openings with no walls) while
+ * updating the active path array and tracking the incoming entry direction to prevent backtracking.
+ *
+ * @param[in]     x        The current cell row coordinate.
+ * @param[in]     y        The current cell column coordinate.
+ * @param[in]     in       The direction from which the algorithm entered the current cell.
+ * @param[in]     maze     Pointer to the encoded maze structure.
+ * @param[in,out] path     Pointer to the active path tracking struct.
+ * @param[in]     path_idx The current depth/step index within the execution path.
+ * @return A pointer to the final Cell array containing the path sequence, or NULL if blocked.
+ */
 Cell* explore(int x, int y, Direction in, Maze *maze, Path *path, int path_idx) {
     Direction dirs[] = {North, East, South, West};
     int num_dirs = sizeof(dirs) / sizeof(dirs[0]);
 
-    #if DEBUG
+    #if DEBUG_SOLVER
     printf("explore(%d, %d, %d, %d)\n", x, y, in, path_idx);
     #endif
 
@@ -71,6 +88,7 @@ Cell* explore(int x, int y, Direction in, Maze *maze, Path *path, int path_idx) 
     return NULL;
 }
 
+/* Implementation as declared in solver.h */
 void solve_maze(Maze *maze) {
     Path path;
     path.found_path = false;

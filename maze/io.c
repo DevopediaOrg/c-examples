@@ -4,6 +4,15 @@
 #include "io.h"
 #include "solver.h"
 
+/**
+ * @brief Calculates the number of columns in the maze from the input file.
+ *
+ * Scans the first line of the file to determine the width of the maze 
+ * based on the character pattern.
+ *
+ * @param[in] fp Pointer to the opened file stream.
+ * @return The total number of columns found.
+ */
 int get_num_cols(FILE *fp) {
     int num_corners = 0;
 
@@ -18,6 +27,14 @@ int get_num_cols(FILE *fp) {
     return num_corners - 1;
 }
 
+/**
+ * @brief Calculates the number of rows in the maze from the input file.
+ *
+ * Counts the total lines in the file to determine the grid height.
+ *
+ * @param[in] fp Pointer to the opened file stream.
+ * @return The total number of rows found.
+ */
 int get_num_rows(FILE *fp) {
     int num_lines = 0;
 
@@ -32,6 +49,7 @@ int get_num_rows(FILE *fp) {
     return (num_lines - 1) / 2;
 }
 
+/* Implementation as declared in io.h */
 void read_maze_from_file(Maze *maze, char *filename) {
     FILE *fp = fopen(filename, "r");
     if (fp == NULL) {
@@ -54,6 +72,7 @@ void read_maze_from_file(Maze *maze, char *filename) {
     fclose(fp);
 }
 
+/* Implementation as declared in io.h */
 void encode_maze(Maze *maze) {
     char (*lines)[maze->line_len] = (char (*)[maze->line_len])maze->lines;
     char (*m)[maze->num_cols] = (char (*)[maze->num_cols])maze->m;
@@ -80,6 +99,7 @@ void encode_maze(Maze *maze) {
     }
 }
 
+/* Implementation as declared in io.h */
 void print_encoded_maze(Maze *maze) {
     for (int i = 0; i < maze->num_rows; i++) {
         for (int j = 0; j < maze->num_cols; j++) {
@@ -90,6 +110,7 @@ void print_encoded_maze(Maze *maze) {
     }
 }
 
+/* Implementation as declared in io.h */
 void print_maze(Maze *maze, Path *path) {
     char (*m)[maze->num_cols] = (char (*)[maze->num_cols])maze->m;
 
