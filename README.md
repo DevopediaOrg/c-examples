@@ -14,11 +14,14 @@ These C concepts can be studied in the following programs:
 * `for` loops and `printf`: `shapes`
 * Treating large numbers as strings: `euler13`
 * Randomness: `mcpi`
-* Linear vs binary search: `bsearch`
 
 `bmp2ascii` is an example of how to deal with images, saving them in memory as an array of pixel data. This program is also an introduction to BMP file format and ASCII art.
 
+`bsearch` illustrates the difference between linear and binary search. It also shows how to use a pointer to a function.
+
 `maze` shows how to organize a program into multiple C header and source files. It also shows the use of documentation comments, which can help is correctly using and maintaining user-written functions.
+
+`snake` is an example of a user-interactive game that can be played on a Windows terminal. It also illustrates the use of emojis, multi-byte symbols and UTF-8 encoding.
 
 
 ## Project Euler
