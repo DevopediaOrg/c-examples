@@ -21,6 +21,11 @@ Here's an example of UTF-8 encoding of "brick" emoji:
 This code works on a Windows terminal but won't work on
 a Linux terminal.
 
+Note: It's common in gaming apps to view columns along x-axis
+and rows along y-axis. In this implementation, we take the
+approach of rows along x-axis and columns along y-axis. Hence,
+we access the game board as grid[x][y] rather than grid[y][x].
+
 TODO (some improvements to consider)
 - Make the game faster when snake exceeds some length
 - Make the game faster if game is being played for too long
@@ -46,8 +51,8 @@ TODO (some improvements to consider)
 #define HEIGHT 20
 
 typedef struct snake {
-    int x[WIDTH * HEIGHT];
-    int y[WIDTH * HEIGHT];
+    int x[WIDTH * HEIGHT]; // rows
+    int y[WIDTH * HEIGHT]; // cols
     int len; // including the head at (x[0], y[0])
 } Snake;
 Snake snake;

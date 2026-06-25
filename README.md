@@ -24,6 +24,22 @@ These C concepts can be studied in the following programs:
 `snake` is an example of a user-interactive game that can be played on a Windows terminal. It also illustrates the use of emojis, multi-byte symbols and UTF-8 encoding.
 
 
+## More Exercises
+Here are some exercises that a student can attempt (not in any particular order):
+- Conway's Game of Life
+- Random Walk
+- Any card game
+- Sudoku solver
+- Huffman coding
+- Markdown to HTML converter
+- C code formatter
+- Basic calculator
+- Web API call
+- Replay a game of chess
+- Balance an AVL tree
+- Implement FIFO (queue) and LIFO (stack) using linked lists
+
+
 ## Project Euler
 In this repo, we solve some problems from Project Euler. For reference, answers are available at https://github.com/lucky-bai/projecteuler-solutions/blob/master/Solutions.md
 
