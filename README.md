@@ -30,6 +30,7 @@ Here are some exercises that a student can attempt (not in any particular order)
 - Random Walk
 - Any card game
 - Sudoku solver
+- Tetris
 - Huffman coding
 - Markdown to HTML converter
 - C code formatter
