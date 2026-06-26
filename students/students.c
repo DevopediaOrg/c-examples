@@ -17,6 +17,9 @@ handling dates and printing formatted tabular data.
 #include <stdbool.h>
 #include <time.h>
 
+//-----------------------------------------------------
+// Types and Constants
+//-----------------------------------------------------
 // TODO Make this dynamic based on file content
 // first_name,last_name,date_of_birth,sex,maths,sci,social,english,hindi,kannada
 #define MAX_LINE_SIZE 1024
@@ -61,6 +64,9 @@ typedef struct class {
 } Class;
 
 
+//-----------------------------------------------------
+// Helper Functions
+//-----------------------------------------------------
 float diff_in_years(struct tm *a, struct tm *b) {
     return abs(b->tm_year*12 - a->tm_year*12 + b->tm_mon - a->tm_mon) / 12.0;
 }
@@ -125,6 +131,10 @@ bool has_passed(char const *grades[]) {
     return true;
 }
 
+
+//-----------------------------------------------------
+// Data Analysis
+//-----------------------------------------------------
 void analyze_and_print(Class *cls) {
     // Process all students
     for (int i = 0; i < cls->num_students; i++) {
@@ -249,6 +259,10 @@ void analyze_and_print(Class *cls) {
     }
 }
 
+
+//-----------------------------------------------------
+// Main
+//-----------------------------------------------------
 int main() {
     Class class12;
     parse_csv(&class12, "student_records.csv");
