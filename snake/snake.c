@@ -112,7 +112,8 @@ void init_game() {
 }
 
 void draw_board() {
-    // Reset cursor to top-left to eliminate flicker
+    // Reset cursor to top-left to reduce flicker
+    // TODO Improve this code to completely eliminate flicker
     COORD cursorPosition;
     cursorPosition.X = 0;
     cursorPosition.Y = 0;
@@ -124,11 +125,9 @@ void draw_board() {
     for (int i = 0; i < WIDTH + 2; i++) printf(brick);
     printf("\n");
 
-    for (int i = 0; i < HEIGHT; i++) {
-        for (int j = 0; j < WIDTH; j++) {
-            // Left wall
-            if (j == 0) printf(brick);
-
+    for (int i = 0; i < HEIGHT; i++) { // within the walls
+        printf(brick); // left wall
+        for (int j = 0; j < WIDTH; j++) { // within the walls
             if (i == snake.x[0] && j == snake.y[0]) {
                 printf("🐸"); // actually a frog head!
             } else if (i == fruit.x && j == fruit.y) {
@@ -143,10 +142,8 @@ void draw_board() {
                 }
                 if (!is_tail) printf("⬜");
             }
-
-            // Right wall
-            if (j == WIDTH - 1) printf(brick);
         }
+        printf(brick); // right wall
         printf("\n");
     }
 
@@ -183,6 +180,9 @@ void process_user_input() {
 }
 
 void update_board() {
+    // Return if there's nothing to update
+    if (gameOver || dir == STOP) return;
+
     // Fruit consumption
     if (snake.x[0] == fruit.x && snake.y[0] == fruit.y) {
         score += 10;
@@ -214,7 +214,7 @@ void update_board() {
         gameOver = true;
 
     // Self-collision
-    for (int i = 1; i < snake.len; i++) {
+    for (int i = 1; !gameOver && i < snake.len; i++) {
         if (snake.x[i] == snake.x[0] && snake.y[i] == snake.y[0]) {
             gameOver = true;
             break;
