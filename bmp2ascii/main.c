@@ -14,7 +14,7 @@ For BMP format, see:
 
 #pragma pack(push, 1)
 typedef struct {
-    unsigned short type;       // Magic identifier: "BM"
+    unsigned char  type[2];    // Magic identifier: "BM"
     unsigned int   size;       // File size
     unsigned short reserved1;
     unsigned short reserved2;
@@ -75,8 +75,8 @@ int main(int argc, char *argv[]) {
     fread(&infoHeader, sizeof(BMPInfoHeader), 1, file);
 
     // Verify it's a valid 24-bit uncompressed BMP
-    // chars BM = 0x4D42 in ASCII
-    if (header.type != 0x4D42 || infoHeader.bits_per_pixel != 24) {
+    // chars B = 0x42, M = 0x4D in ASCII
+    if (header.type[0] != 0x42 || header.type[1] != 0x4D || infoHeader.bits_per_pixel != 24) {
         printf("Error: App appears not to be a valid 24-bit BMP image.\n");
         fclose(file);
         return ERR_BAD_HEADER;
@@ -98,6 +98,7 @@ int main(int argc, char *argv[]) {
     fseek(file, header.offset, SEEK_SET); // jump to where pixels start
     for (int r = 0; r < height; r++) {
         for (int c = 0; c < width; c++) {
+            // RGB saved in B-G-R order due to little-endianess of BMP
             unsigned char b = fgetc(file);
             unsigned char g = fgetc(file);
             unsigned char r_val = fgetc(file);
