@@ -99,7 +99,9 @@ bool binary_search(char **words, char *word) {
 }
 
 bool is_in_dict(char **words, char *word, bool (*search)(char **, char *)) {
-    return search(words, word);
+    bool found = search(words, word);
+    if (!found) printf("Did not find a match in the dictionary.\n");
+    return found;
 }
 
 int main(int argc, char *argv[]) {
