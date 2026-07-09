@@ -6,7 +6,9 @@ Checks if a given word is a palindrome.
 #include <string.h>
 #include <stdbool.h>
 
-bool is_palindrome(char *word) {
+bool is_palindrome(char const *word) {
+    if (word == NULL) return false;
+    
     int len = strlen(word);
     for (int i = 0;  i < len/2; i++) {
         if (word[i] != word[len-i-1]) return false;
