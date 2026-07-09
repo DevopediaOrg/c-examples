@@ -11,7 +11,7 @@ These C concepts can be studied in the following programs:
 * Function return: `average`, `distance`, `maxstr`
 * `sscanf`: `rgb`, `timediff`
 * `sprintf`: `euler40`
-* `for` loops and `printf`: `shapes`
+* `for` loops and `printf`: `shapes`, `arrays`
 * Treating large numbers as strings: `euler13`
 * Data handling: `students`
 * Randomness: `mcpi`, `fsm`
