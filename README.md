@@ -14,6 +14,7 @@ These C concepts can be studied in the following programs:
 * `for` loops and `printf`: `shapes`
 * Treating large numbers as strings: `euler13`
 * Data handling: `students`
+* Randomness: `mcpi`, `fsm`
 
 `bmp2ascii` is an example of how to deal with images, saving them in memory as an array of pixel data. This program is also an introduction to BMP file format and ASCII art.
 
@@ -21,7 +22,9 @@ These C concepts can be studied in the following programs:
 
 `maze` shows how to organize a program into multiple C header and source files. It also shows the use of documentation comments, which can help is correctly using and maintaining user-written functions.
 
-`mcpi` introduces Monte Carlo simulation and how to make use of randomness.
+`morse` implements an encoder and decoder of International Morse Code. This code is quite simple and a good exercise for beginners.
+
+`mcpi` introduces Monte Carlo simulation and how to make use of randomness. `fsm` is another example of Monte Carlo simulation.
 
 `snake` is an example of a user-interactive game that can be played on a Windows terminal. It also illustrates the use of emojis, multi-byte symbols and UTF-8 encoding.
 
