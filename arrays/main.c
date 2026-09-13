@@ -2,13 +2,13 @@
 This consists of a few exercises to practice the handling of arrays.
 */
 
-// Take two arrays and find items common to both
+// Take two arrays and find items common to both not necessarily in the same index
 void find_commons(int a[], int b[], int size) {
     // TODO Find common items and print here
 }
 
 // Take the average of n consecutive items
-void find_moving_average(int a[], int n) {
+void find_moving_average(int a[], int size, int n) {
     // TODO Calculate and print the moving averages here
 }
 
@@ -23,12 +23,12 @@ void sort_strings(char * a[], int size) {
 }
 
 int main() {
-    int a[] = { 1, 2, 3, 2, 3, 4, 3, 4, 5, 6 };
+    int a[] = { 2, 3, 7, 3, 4, 3, 4, 5, 6, 1 };
     int b[] = { 7, 2, 10, 2, 7, 4, 9, 4, 9, 8 };
     
     find_commons(a, b, sizeof(a) / sizeof(int));
 
-    find_moving_average(a, 3);
+    find_moving_average(a, sizeof(a) / sizeof(int), 3);
 
     sort_nums(b, sizeof(b) / sizeof(int));
 
